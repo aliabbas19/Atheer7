@@ -1,0 +1,20 @@
+:root {
+    --background-color: #121212;
+    --text-color: white;
+    --header-background: #1e1e1e;
+    --nav-link-color: #84ff88;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.headerr {
+    background-color: var(--header-background);
+}
+
+.nav-item > a {
+    color: var(--nav-link-color);
+}

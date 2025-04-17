@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerbala Campaign Map</title>
+    <style>
+        /* Basic styles for the map */
+        #map {
+            height: 500px; /* Set height for the map */
+            width: 100%; /* Full width */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Add this CSS to your homepage.css or within a <style> tag */
+        .info-window-button {
+            padding: 10px 20px; /* Padding inside the button */
+            font-size: 16px; /* Font size for button text */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+            background-color: #477023; /* White background for buttons */
+            color: white; /* Green text color */
+            border: 1px solid #2d2814; /* Remove default border */
+            border-radius: 5px; /* Rounded corners for buttons */
+            cursor: pointer; /* Pointer cursor on hover */
+            margin-right: 20px;
+        }
+
+        .info-window-button:hover {
+            transform: translateY(-4px); /* Start slightly above to create a slide effect */
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for fade and slide effect */
+            box-shadow: 7px 7px 14px rgba(49, 31, 14, 0.7); /* Darker shadow on hover */
+        }
+
+        .info-window-button:active {
+            background-color: #397d3a; /* Even darker green when pressed */
+        }
+        
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyW5p8xSprSL38gmARrb6fy6R7FUAv20A&callback=initMap" async defer></script> <!-- Replace YOUR_API_KEY -->
+</head>
+<body>
+
+<h2>Interactive Map of Kerbala City</h2>
+<div id="map"></div>
+
+<script>
+    let currentInfoWindow; // Variable to store the currently open info window
+
+    function initMap() {
+        // Center of Kerbala
+        const kerbala = { lat: 32.6074, lng: 44.0835 };
+        
+        // Create the map
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: kerbala,
+        });
+
+        // Define campaign points with additional information
+        const campaignPoints = [
+            { position: { lat: 32.5839, lng: 44.0800 }, title: "Campaign Point 3", info: "Information about Campaign Point 3." },
+            { position: { lat: 32.2837, lng: 44.0820 }, title: "Campaign Point 4", info: "Information about Campaign Point 4." }
+        ];
+
+        // Add markers to the map
+        campaignPoints.forEach(point => {
+            const marker = new google.maps.Marker({
+                position: point.position,
+                map: map,
+                title: point.title,
+            });
+
+            // Create an info window with content
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div>
+                        <h3>${point.title}</h3>
+                        <p>${point.info}</p>
+                        <button class="info-window-button" onclick="alert('More information about ${point.title}.')">Registration</button>
+                    </div>
+                `
+            });
+
+            // Show info window on marker click and keep it open
+            marker.addListener("click", () => {
+                // Close the currently open info window if there is one
+                if (currentInfoWindow) {
+                    currentInfoWindow.close();
+                }
+                
+                // Open the new info window and set it as the current one
+                infoWindow.open(map, marker);
+                currentInfoWindow = infoWindow; // Store reference to the currently open info window
+            });
+        });
+    }
+
+    // Initialize the map when the window loads
+    window.onload = initMap;
+</script>
+
+</body>
+</html>
